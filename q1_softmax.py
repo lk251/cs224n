@@ -33,7 +33,7 @@ def softmax(x):
         ### YOUR CODE HERE
         c = np.max(x, 1)
         x -= c[:, np.newaxis]
-        x = exp(x)
+        x = np.exp(x)
         s = np.sum(x, 1)
         x /= s[:, np.newaxis]
         # raise NotImplementedError
@@ -42,7 +42,7 @@ def softmax(x):
         # Vector
         ### YOUR CODE HERE
         x -= np.max(x)
-        x = exp(x)
+        x = np.exp(x)
         x /= np.sum(x)
         raise NotImplementedError
         ### END YOUR CODE
