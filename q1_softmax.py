@@ -44,7 +44,7 @@ def softmax(x):
         x -= np.max(x)
         x = np.exp(x)
         x /= np.sum(x)
-        raise NotImplementedError
+        # raise NotImplementedError
         ### END YOUR CODE
 
     assert x.shape == orig_shape
