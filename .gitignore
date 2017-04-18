@@ -2,3 +2,5 @@
 stanfordSentimentTreebank/
 /.assn1_env/
 /q1_softmax.py~
+utils/datasets/glove.6B.50d.txt
+utils/datasets/glove.6B.50d.txt
