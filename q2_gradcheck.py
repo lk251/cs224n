@@ -34,7 +34,7 @@ def gradcheck_naive(f, x):
         x_plus_d[ix] += h
 
         x_minus_d = np.copy(x)
-        x_minus_d[ix] += h
+        x_minus_d[ix] -= h
         random.setstate(rndstate)
         fx_plus, _ = f(x_plus_d)
 
