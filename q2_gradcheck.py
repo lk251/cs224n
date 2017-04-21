@@ -34,7 +34,7 @@ def gradcheck_naive(f, x):
         x_mod[ix] += h
         random.setstate(rndstate)
         fx_mod, _ = f(x_mod)
-        numgrad = (fx_mod[ix] - f[ix]) / h
+        numgrad = (fx_mod - fx) / h
         # raise NotImplementedError
         ### END YOUR CODE
 
