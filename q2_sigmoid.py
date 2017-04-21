@@ -36,7 +36,8 @@ def sigmoid_grad(s):
     """
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    ds = sigmoid(x) * (1 - sigmoid(x))
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return ds
