@@ -15,7 +15,8 @@ def sigmoid(x):
     """
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    s = 1 / (1 + exp(x))
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return s
