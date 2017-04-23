@@ -7,7 +7,12 @@ from q1_softmax import softmax
 from q2_sigmoid import sigmoid, sigmoid_grad
 from q2_gradcheck import gradcheck_naive
 
-
+def cross_entropy(labels, y):
+    """
+    Return the cross entropy cost between labels, a matrix of row one-hot vectors, and y, a matrix in which each row is a prediction. (Both matrices are numpy arrays)
+    """
+    return - sum(labels * (np.log(y)), 1)
+    
 def forward_backward_prop(data, labels, params, dimensions):
     """
     Forward and backward propagation for a two-layer sigmoidal network
