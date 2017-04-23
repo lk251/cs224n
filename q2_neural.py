@@ -41,9 +41,9 @@ def forward_backward_prop(data, labels, params, dimensions):
     b2 = np.reshape(params[ofs:ofs + Dy], (1, Dy))
 
     ### YOUR CODE HERE: forward propagation
-    z1 = data * W1 + b1
+    z1 = np.matmul(data * W1) + b1
     h = sigmoid(z1)
-    z2 = h * W2 + b2
+    z2 = np.matmul(h * W2) + b2
     y = softmax(z2)
     cost = cross_entropy(labels, y)
     # raise NotImplementedError
