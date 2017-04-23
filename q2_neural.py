@@ -41,16 +41,22 @@ def forward_backward_prop(data, labels, params, dimensions):
     b2 = np.reshape(params[ofs:ofs + Dy], (1, Dy))
 
     ### YOUR CODE HERE: forward propagation
-    z1 = np.matmul(data, W1) + b1
-    h = sigmoid(z1)
-    z2 = np.matmul(h, W2) + b2
-    y = softmax(z2)
+    z1 = np.matmul(data, W1) + b1 # (M, H)
+    h = sigmoid(z1)               # (M, H)
+    z2 = np.matmul(h, W2) + b2    # (M, Dy)
+    y = softmax(z2)               # (M, Dy)
     cost = cross_entropy(labels, y)
     # raise NotImplementedError
     ### END YOUR CODE
-
+    
     ### YOUR CODE HERE: backward propagation
-    raise NotImplementedError
+    gradz2 = y - labels
+    gradW2 = np.matmul(h.T, gradz2) # (H, Dy)
+    gradb2 = gradz2                 # (Dy)
+    gradz1 = np.matmul(gradz2, W2.T) * sigmoid_grad(sigmoid(z1))# (M * H)
+    gradW1 = np.matmul(data.T, gradz1)                          # (Dx * H)
+    gradb1 = gradz1                                             # (M, H)
+    # raise NotImplementedError
     ### END YOUR CODE
 
     ### Stack gradients (do not modify)
