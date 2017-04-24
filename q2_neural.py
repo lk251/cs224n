@@ -11,7 +11,7 @@ def cross_entropy(labels, y):
     """
     Return the cross entropy cost between labels, a matrix of row one-hot vectors, and y, a matrix in which each row is a prediction. (Both matrices are numpy arrays)
     """
-    return - np.sum(labels * (np.log(y)))
+    return - np.sum(labels * np.log(y))
     
 def forward_backward_prop(data, labels, params, dimensions):
     """
@@ -50,12 +50,13 @@ def forward_backward_prop(data, labels, params, dimensions):
     ### END YOUR CODE
     
     ### YOUR CODE HERE: backward propagation
-    gradz2 = y - labels
+    m = labels.shape[0]
+    gradz2 = y - labels             # (M, Dy)
     gradW2 = np.matmul(h.T, gradz2) # (H, Dy)
-    gradb2 = gradz2                 # (Dy)
+    gradb2 = np.matmul(np.ones((1, m)), gradz2)                 # (1, Dy)
     gradz1 = np.matmul(gradz2, W2.T) * sigmoid_grad(sigmoid(z1))# (M * H)
     gradW1 = np.matmul(data.T, gradz1)                          # (Dx * H)
-    gradb1 = gradz1                                             # (M, H)
+    gradb1 = np.matmul(np.ones((1, m)), gradz1)                 # (1, H)
     # raise NotImplementedError
     ### END YOUR CODE
 
