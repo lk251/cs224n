@@ -55,7 +55,7 @@ def forward_backward_prop(data, labels, params, dimensions):
     gradb2 = gradz2                 # (Dy)
     gradz1 = np.matmul(gradz2, W2.T) * sigmoid_grad(sigmoid(z1))# (M * H)
     gradW1 = np.matmul(data.T, gradz1)                          # (Dx * H)
-    gradb1 = gradz1                                             # (M, H)
+    gradb1 = np.sum(gradz1, 0)                                  # (M, H)
     # raise NotImplementedError
     ### END YOUR CODE
 
