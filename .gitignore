@@ -7,3 +7,4 @@ utils/datasets/glove.6B.50d.txt
 /q2_sigmoid.pyc
 /q1_softmax.pyc
 /q2_gradcheck.pyc
+/q2_neural.pyc

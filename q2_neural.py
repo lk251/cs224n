@@ -11,7 +11,7 @@ def cross_entropy(labels, y):
     """
     Return the cross entropy cost between labels, a matrix of row one-hot vectors, and y, a matrix in which each row is a prediction. (Both matrices are numpy arrays)
     """
-    return - sum(labels * (np.log(y)), 1)
+    return - np.sum(labels * (np.log(y)))
     
 def forward_backward_prop(data, labels, params, dimensions):
     """
