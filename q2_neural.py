@@ -50,12 +50,13 @@ def forward_backward_prop(data, labels, params, dimensions):
     ### END YOUR CODE
     
     ### YOUR CODE HERE: backward propagation
+    m = labels.shape[0]
     gradz2 = y - labels             # (M, Dy)
     gradW2 = np.matmul(h.T, gradz2) # (H, Dy)
     gradb2 = gradz2                 # (Dy)
     gradz1 = np.matmul(gradz2, W2.T) * sigmoid_grad(sigmoid(z1))# (M * H)
     gradW1 = np.matmul(data.T, gradz1)                          # (Dx * H)
-    gradb1 = np.sum(gradz1, 0)                                  # (M, H)
+    gradb1 = np.matmul(np.ones((1, m)), gradz1)                 # (1, H)
     # raise NotImplementedError
     ### END YOUR CODE
 
