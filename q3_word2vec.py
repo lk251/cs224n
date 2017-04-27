@@ -61,6 +61,8 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
 
     ### YOUR CODE HERE
     theta = softmax(np.matmul(outputVectors, predicted)) # W * 1
+    cost = - np.log(theta[target])
+    
     # raise NotImplementedError
     ### END YOUR CODE
 
