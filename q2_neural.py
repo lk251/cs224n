@@ -7,7 +7,12 @@ from q1_softmax import softmax
 from q2_sigmoid import sigmoid, sigmoid_grad
 from q2_gradcheck import gradcheck_naive
 
-
+def cross_entropy(labels, y):
+    """
+    Return the cross entropy cost between labels, a matrix of row one-hot vectors, and y, a matrix in which each row is a prediction. (Both matrices are numpy arrays)
+    """
+    return - np.sum(labels * np.log(y))
+    
 def forward_backward_prop(data, labels, params, dimensions):
     """
     Forward and backward propagation for a two-layer sigmoidal network
@@ -36,11 +41,23 @@ def forward_backward_prop(data, labels, params, dimensions):
     b2 = np.reshape(params[ofs:ofs + Dy], (1, Dy))
 
     ### YOUR CODE HERE: forward propagation
-    raise NotImplementedError
+    z1 = np.matmul(data, W1) + b1 # (M, H)
+    h = sigmoid(z1)               # (M, H)
+    z2 = np.matmul(h, W2) + b2    # (M, Dy)
+    y = softmax(z2)               # (M, Dy)
+    cost = cross_entropy(labels, y)
+    # raise NotImplementedError
     ### END YOUR CODE
-
+    
     ### YOUR CODE HERE: backward propagation
-    raise NotImplementedError
+    m = labels.shape[0]
+    gradz2 = y - labels             # (M, Dy)
+    gradW2 = np.matmul(h.T, gradz2) # (H, Dy)
+    gradb2 = np.matmul(np.ones((1, m)), gradz2)                 # (1, Dy)
+    gradz1 = np.matmul(gradz2, W2.T) * sigmoid_grad(sigmoid(z1))# (M * H)
+    gradW1 = np.matmul(data.T, gradz1)                          # (Dx * H)
+    gradb1 = np.matmul(np.ones((1, m)), gradz1)                 # (1, H)
+    # raise NotImplementedError
     ### END YOUR CODE
 
     ### Stack gradients (do not modify)
@@ -86,4 +103,4 @@ def your_sanity_checks():
 
 if __name__ == "__main__":
     sanity_check()
-    your_sanity_checks()
+    # your_sanity_checks()
