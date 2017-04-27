@@ -6,7 +6,6 @@ import random
 from q1_softmax import softmax
 from q2_gradcheck import gradcheck_naive
 from q2_sigmoid import sigmoid, sigmoid_grad
-from q2_neural import cross_entropy
 
 def normalizeRows(x):
     """ Row normalization function
@@ -62,7 +61,11 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     ### YOUR CODE HERE
     theta = softmax(np.matmul(outputVectors, predicted)) # W * 1
     cost = - np.log(theta[target])
-    
+    gradTheta = np.copy(theta)
+    gradTheta[target] -= 1
+    gradPred = np.matmul(outputVectors, gradTheta) # matmul U (vhat - y)
+    # Assuming "all the other word vectors" refers to U:
+    grad = np.matmul(predicted, gradTheta)
     # raise NotImplementedError
     ### END YOUR CODE
 
