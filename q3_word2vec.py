@@ -15,10 +15,11 @@ def normalizeRows(x):
     """
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    # raise NotImplementedError
     ### END YOUR CODE
-
-    return x
+    twonorms = np.linalg.norm(x, axis=1)
+    twonorms = twonorms[:, np.newaxis]
+    return x / twonorms
 
 
 def test_normalize_rows():
