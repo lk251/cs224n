@@ -145,7 +145,7 @@ def skipgram(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
         cost_j, gradIn_j, gradOut_j = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
         cost += cost_j
         gradIn[tokens[currentWord]] += gradIn_j
-        gradIn += gradOut_j
+        gradOut += gradOut_j
     # raise NotImplementedError
     ### END YOUR CODE
 
