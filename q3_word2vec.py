@@ -63,9 +63,9 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     cost = - np.log(theta[target])
     gradTheta = np.copy(theta)
     gradTheta[target] -= 1
-    gradPred = np.matmul(outputVectors, gradTheta) # matmul U (vhat - y)
+    gradPred = np.matmul(outputVectors.T, gradTheta) # matmul U (vhat - y)
     # Assuming "all the other word vectors" refers to U:
-    grad = np.matmul(predicted, gradTheta)
+    grad = np.matmul(gradTheta[:, np.newaxis], predicted[np.newaxis, :])
     # raise NotImplementedError
     ### END YOUR CODE
 
@@ -139,7 +139,14 @@ def skipgram(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    predicted = inputVectors[tokens[currentWord]]
+    for j in xrange(len(contextWords)):
+        target = tokens[contextWords[j]]
+        cost_j, gradIn_j, gradOut_j = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
+        cost += cost_j
+        gradIn[tokens[currentWord]] += gradIn_j
+        gradIn += gradOut_j
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
