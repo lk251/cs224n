@@ -6,6 +6,7 @@ import random
 from q1_softmax import softmax
 from q2_gradcheck import gradcheck_naive
 from q2_sigmoid import sigmoid, sigmoid_grad
+import pdb
 
 def normalizeRows(x):
     """ Row normalization function
@@ -104,7 +105,16 @@ def negSamplingCostAndGradient(predicted, target, outputVectors, dataset,
     indices.extend(getNegativeSamples(target, dataset, K))
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    sigmoid_output = sigmoid(np.matmul(outputVectors[target], predicted))
+    sigmoid_negSamples = sigmoid(- np.matmul(outputVectors[indices[1:]], predicted))
+    cost = - np.log(sigmoid_output) - np.sum(np.log(sigmoid_negSamples))
+    gradPred = (sigmoid_output - 1) * outputVectors[target] - sum((sigmoid_negSamples - 1)[:, np.newaxis] * outputVectors[indices[1:]], 0)
+    grad = np.zeros(outputVectors.shape)
+    grad[target] = (sigmoid_output - 1) * predicted
+    # pdb.set_trace()
+    for k in xrange(K-1):
+        grad[indices[k+1]] += (- (sigmoid_negSamples[k+1] - 1) * predicted)
+    # pdb.set_trace()
     ### END YOUR CODE
 
     return cost, gradPred, grad
