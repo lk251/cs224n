@@ -65,7 +65,8 @@ def getRegularizationValues():
     """
     values = None   # Assign a list of floats in the block below
     ### YOUR CODE HERE
-    raise NotImplementedError
+    [0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100, 300]
+    # raise NotImplementedError
     ### END YOUR CODE
     return sorted(values)
 
