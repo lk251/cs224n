@@ -15,3 +15,5 @@ utils/datasets/glove.6B.50d.txt
 /utils/treebank.pyc
 
 *.npy
+*.png
+*.pyc
