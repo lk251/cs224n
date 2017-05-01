@@ -7,6 +7,7 @@ from q1_softmax import softmax
 from q2_gradcheck import gradcheck_naive
 from q2_sigmoid import sigmoid, sigmoid_grad
 
+
 def normalizeRows(x):
     """ Row normalization function
 
@@ -15,10 +16,11 @@ def normalizeRows(x):
     """
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    # raise NotImplementedError
     ### END YOUR CODE
-
-    return x
+    twonorms = np.linalg.norm(x, axis=1)
+    twonorms = twonorms[:, np.newaxis]
+    return x / twonorms
 
 
 def test_normalize_rows():
@@ -58,7 +60,14 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     """
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    theta = softmax(np.matmul(outputVectors, predicted))
+    cost = - np.log(theta[target])
+    gradTheta = np.copy(theta)
+    gradTheta[target] -= 1
+    gradPred = np.matmul(outputVectors.T, gradTheta) 
+    # Assuming "all the other word vectors" refers to U:
+    grad = np.matmul(gradTheta[:, np.newaxis], predicted[np.newaxis, :])
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradPred, grad
@@ -96,9 +105,15 @@ def negSamplingCostAndGradient(predicted, target, outputVectors, dataset,
     indices.extend(getNegativeSamples(target, dataset, K))
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    sigmoid_output = sigmoid(np.matmul(outputVectors[target], predicted))
+    sigmoid_negSamples = sigmoid(- np.matmul(outputVectors[indices[1:]], predicted))
+    cost = - np.log(sigmoid_output) - np.sum(np.log(sigmoid_negSamples))
+    gradPred = (sigmoid_output - 1) * outputVectors[target] - sum((sigmoid_negSamples - 1)[:, np.newaxis] * outputVectors[indices[1:]], 0)
+    grad = np.zeros(outputVectors.shape)
+    grad[target] = (sigmoid_output - 1) * predicted
+    for k in xrange(K):
+        grad[indices[k+1]] += (- (sigmoid_negSamples[k] - 1) * predicted)
     ### END YOUR CODE
-
     return cost, gradPred, grad
 
 
@@ -109,7 +124,7 @@ def skipgram(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     Implement the skip-gram model in this function.
 
     Arguments:
-    currrentWord -- a string of the current center word
+    currentWord -- a string of the current center word
     C -- integer, context size
     contextWords -- list of no more than 2*C strings, the context words
     tokens -- a dictionary that maps words to their indices in
@@ -131,7 +146,14 @@ def skipgram(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    predicted = inputVectors[tokens[currentWord]]
+    for j in xrange(len(contextWords)):
+        target = tokens[contextWords[j]]
+        cost_j, gradIn_j, gradOut_j = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
+        cost += cost_j
+        gradIn[tokens[currentWord]] += gradIn_j
+        gradOut += gradOut_j
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
@@ -155,7 +177,14 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    predicted_indices = [tokens[word] for word in contextWords]
+    predicted_vectors = inputVectors[predicted_indices]
+    predicted = np.sum(predicted_vectors, axis=0)
+    target = tokens[currentWord]
+    cost, gradIn_predicted, gradOut = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
+    for i in predicted_indices:
+        gradIn[i] += gradIn_predicted
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
@@ -164,6 +193,7 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
 #############################################
 # Testing functions below. DO NOT MODIFY!   #
 #############################################
+
 
 def word2vec_sgd_wrapper(word2vecModel, tokens, wordVectors, dataset, C,
                          word2vecCostAndGradient=softmaxCostAndGradient):

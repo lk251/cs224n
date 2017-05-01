@@ -8,3 +8,7 @@ utils/datasets/glove.6B.50d.txt
 /q1_softmax.pyc
 /q2_gradcheck.pyc
 /q2_neural.pyc
+/q3_sgd.pyc
+/q3_word2vec.pyc
+/utils/__init__.pyc
+/utils/treebank.pyc
