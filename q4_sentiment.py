@@ -90,7 +90,12 @@ def chooseBestModel(results):
     bestResult = None
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    for result in results:
+        if bestResult == None:
+            bestResult = result
+        if result["dev"] > bestResult["dev"]:
+            bestResult = result
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return bestResult
