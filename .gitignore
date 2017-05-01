@@ -13,3 +13,5 @@ utils/datasets/glove.6B.50d.txt
 /saved_params_5000.npy
 /utils/__init__.pyc
 /utils/treebank.pyc
+
+*.npy
