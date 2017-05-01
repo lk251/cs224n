@@ -111,8 +111,8 @@ def negSamplingCostAndGradient(predicted, target, outputVectors, dataset,
     gradPred = (sigmoid_output - 1) * outputVectors[target] - sum((sigmoid_negSamples - 1)[:, np.newaxis] * outputVectors[indices[1:]], 0)
     grad = np.zeros(outputVectors.shape)
     grad[target] = (sigmoid_output - 1) * predicted
-    for i in indices[1:]:
-        grad[i] += (- (sigmoid_negSamples[i] - 1) * predicted)
+    for k in xrange(K):
+        grad[indices[k+1]] += (- (sigmoid_negSamples[k] - 1) * predicted)
     ### END YOUR CODE
     return cost, gradPred, grad
 
