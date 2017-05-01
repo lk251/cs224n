@@ -12,4 +12,3 @@ utils/datasets/glove.6B.50d.txt
 /q3_word2vec.pyc
 /utils/__init__.pyc
 /utils/treebank.pyc
-/saved_params_5000.npy
