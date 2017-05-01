@@ -6,7 +6,7 @@ import random
 from q1_softmax import softmax
 from q2_gradcheck import gradcheck_naive
 from q2_sigmoid import sigmoid, sigmoid_grad
-import pdb
+
 
 def normalizeRows(x):
     """ Row normalization function
@@ -60,11 +60,11 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     """
 
     ### YOUR CODE HERE
-    theta = softmax(np.matmul(outputVectors, predicted)) # W * 1
+    theta = softmax(np.matmul(outputVectors, predicted))
     cost = - np.log(theta[target])
     gradTheta = np.copy(theta)
     gradTheta[target] -= 1
-    gradPred = np.matmul(outputVectors.T, gradTheta) # matmul U (vhat - y)
+    gradPred = np.matmul(outputVectors.T, gradTheta) 
     # Assuming "all the other word vectors" refers to U:
     grad = np.matmul(gradTheta[:, np.newaxis], predicted[np.newaxis, :])
     # raise NotImplementedError
@@ -177,15 +177,23 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    predicted_indices = [tokens[word] for word in contextWords]
+    predicted_vectors = inputVectors[predicted_indices]
+    predicted = np.sum(predicted_vectors, axis=0)
+    target = tokens[currentWord]
+    cost, gradIn_predicted, gradOut = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
+    for i in predicted_indices:
+        gradIn[i] += gradIn_predicted
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
 
 
 #############################################
-# Testing functions below. DO NOT MODIFY!   #
-#############################################
+-# Testing functions below. DO NOT MODIFY!   #
+-#############################################
+
 
 def word2vec_sgd_wrapper(word2vecModel, tokens, wordVectors, dataset, C,
                          word2vecCostAndGradient=softmaxCostAndGradient):
