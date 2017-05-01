@@ -177,7 +177,13 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    
+    predicted_indices = [tokens[word] for word in contextWords]
+    predicted_vectors = inputVectors[predicted_indices]
+    predicted = np.sum(predicted_vectors, axis=0)
+    target = tokens[currentWord]
+    cost, gradOut, gradIn = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
