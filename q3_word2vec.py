@@ -60,11 +60,11 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     """
 
     ### YOUR CODE HERE
-    theta = softmax(np.matmul(outputVectors, predicted)) # W * 1
+    theta = softmax(np.matmul(outputVectors, predicted))
     cost = - np.log(theta[target])
     gradTheta = np.copy(theta)
     gradTheta[target] -= 1
-    gradPred = np.matmul(outputVectors.T, gradTheta) # matmul U (vhat - y)
+    gradPred = np.matmul(outputVectors.T, gradTheta) 
     # Assuming "all the other word vectors" refers to U:
     grad = np.matmul(gradTheta[:, np.newaxis], predicted[np.newaxis, :])
     # raise NotImplementedError
