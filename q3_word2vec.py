@@ -191,8 +191,8 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
 
 
 #############################################
--# Testing functions below. DO NOT MODIFY!   #
--#############################################
+# Testing functions below. DO NOT MODIFY!   #
+#############################################
 
 
 def word2vec_sgd_wrapper(word2vecModel, tokens, wordVectors, dataset, C,
