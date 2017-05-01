@@ -6,6 +6,7 @@ import random
 from q1_softmax import softmax
 from q2_gradcheck import gradcheck_naive
 from q2_sigmoid import sigmoid, sigmoid_grad
+import pdb
 
 def normalizeRows(x):
     """ Row normalization function
@@ -63,9 +64,9 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     cost = - np.log(theta[target])
     gradTheta = np.copy(theta)
     gradTheta[target] -= 1
-    gradPred = np.matmul(outputVectors, gradTheta) # matmul U (vhat - y)
+    gradPred = np.matmul(outputVectors.T, gradTheta) # matmul U (vhat - y)
     # Assuming "all the other word vectors" refers to U:
-    grad = np.matmul(predicted, gradTheta)
+    grad = np.matmul(gradTheta[:, np.newaxis], predicted[np.newaxis, :])
     # raise NotImplementedError
     ### END YOUR CODE
 
@@ -104,9 +105,15 @@ def negSamplingCostAndGradient(predicted, target, outputVectors, dataset,
     indices.extend(getNegativeSamples(target, dataset, K))
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    sigmoid_output = sigmoid(np.matmul(outputVectors[target], predicted))
+    sigmoid_negSamples = sigmoid(- np.matmul(outputVectors[indices[1:]], predicted))
+    cost = - np.log(sigmoid_output) - np.sum(np.log(sigmoid_negSamples))
+    gradPred = (sigmoid_output - 1) * outputVectors[target] - sum((sigmoid_negSamples - 1)[:, np.newaxis] * outputVectors[indices[1:]], 0)
+    grad = np.zeros(outputVectors.shape)
+    grad[target] = (sigmoid_output - 1) * predicted
+    for k in xrange(K):
+        grad[indices[k+1]] += (- (sigmoid_negSamples[k] - 1) * predicted)
     ### END YOUR CODE
-
     return cost, gradPred, grad
 
 
@@ -139,7 +146,14 @@ def skipgram(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    predicted = inputVectors[tokens[currentWord]]
+    for j in xrange(len(contextWords)):
+        target = tokens[contextWords[j]]
+        cost_j, gradIn_j, gradOut_j = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
+        cost += cost_j
+        gradIn[tokens[currentWord]] += gradIn_j
+        gradOut += gradOut_j
+    # raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
