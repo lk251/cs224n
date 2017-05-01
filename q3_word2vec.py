@@ -182,7 +182,10 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     predicted_vectors = inputVectors[predicted_indices]
     predicted = np.sum(predicted_vectors, axis=0)
     target = tokens[currentWord]
-    cost, gradOut, gradIn = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
+    pdb.set_trace()
+    cost, gradIn_predicted, gradOut = word2vecCostAndGradient(predicted, target, outputVectors, dataset)
+
+    gradIn[predicted_indices] = gradIn_predicted
     # raise NotImplementedError
     ### END YOUR CODE
 
