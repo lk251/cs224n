@@ -18,3 +18,4 @@ utils/datasets/glove.6B.50d.txt
 *.png
 *.pyc
 /q4_dev_pred.txt
+/.DS_Store
