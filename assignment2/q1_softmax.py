@@ -25,7 +25,7 @@ def softmax(x):
 
     ### YOUR CODE HERE
     scores = tf.exp(x)
-    out = scores / tf.reduce_sum(scores, 1)
+    out = scores / tf.expand_dims(tf.reduce_sum(scores, 1), 1)
     ### END YOUR CODE
 
     return out
