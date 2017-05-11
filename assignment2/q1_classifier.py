@@ -21,7 +21,7 @@ class Config(object):
     n_classes = 5
     batch_size = 64
     n_epochs = 50
-    lr = 1e-4
+    lr = 3e-4
 
 
 class SoftmaxModel(Model):
