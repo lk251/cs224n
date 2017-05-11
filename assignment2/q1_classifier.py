@@ -45,8 +45,8 @@ class SoftmaxModel(Model):
             self.labels_placeholder
         """
         ### YOUR CODE HERE
-        self.input_placeholder = tf.placeholder(tf.float32, shape=(self.Config.batch_size, self.Config.n_features))
-        self.labels_placeholder = tf.placeholder(tf.int32, shape=(batch_size, n_classes))
+        self.input_placeholder = tf.placeholder(tf.float32, shape=(Config.batch_size, Config.n_features))
+        self.labels_placeholder = tf.placeholder(tf.int32, shape=(Config.batch_size, Config.n_classes))
         ### END YOUR CODE
 
     def create_feed_dict(self, inputs_batch, labels_batch=None):
@@ -70,9 +70,9 @@ class SoftmaxModel(Model):
             feed_dict: The feed dictionary mapping from placeholders to values.
         """
         ### YOUR CODE HERE
-        feed_dict = {input_placeholder: inputs_batch}
-        if labels_batch:
-            feed_dict[labels_placeholder] = labels_batch
+        feed_dict = {self.input_placeholder: inputs_batch}
+        if labels_batch is not None:
+            feed_dict[self.labels_placeholder] = labels_batch
         ### END YOUR CODE
         return feed_dict
 
@@ -93,9 +93,9 @@ class SoftmaxModel(Model):
             pred: A tensor of shape (batch_size, n_classes)
         """
         ### YOUR CODE HERE
-        W = tf.truncated_normal([self.Config.n_features, self.Config.n_classes])
-        b = tf.truncated_normal([1, self.Config.n_classes])
-        pred = softmax(x * W + b)
+        W = tf.Variable(tf.truncated_normal([Config.n_features, Config.n_classes]))
+        b = tf.Variable(tf.truncated_normal([1, Config.n_classes]))
+        pred = softmax(tf.matmul(self.input_placeholder, W) + b)
         ### END YOUR CODE
         return pred
 
@@ -134,6 +134,8 @@ class SoftmaxModel(Model):
             train_op: The Op for training.
         """
         ### YOUR CODE HERE
+        train_op = tf.train.GradientDescentOptimizer(Config.lr).minimize(loss)
+        
         ### END YOUR CODE
         return train_op
 
