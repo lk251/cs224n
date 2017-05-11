@@ -93,6 +93,9 @@ class SoftmaxModel(Model):
             pred: A tensor of shape (batch_size, n_classes)
         """
         ### YOUR CODE HERE
+        W = tf.truncated_normal([self.Config.n_features, self.Config.n_classes])
+        b = tf.truncated_normal([1, self.Config.n_classes])
+        pred = softmax(x * W + b)
         ### END YOUR CODE
         return pred
 
