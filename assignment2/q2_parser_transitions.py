@@ -78,20 +78,17 @@ def minibatch_parse(sentences, model, batch_size):
     """
 
     ### YOUR CODE HERE
-    # First, make a list of PartialParses
     partial_parses = [PartialParse(x) for x in sentences]
     unfinished_parses = list(partial_parses)
     while unfinished_parses:
-        transitions = model.predict(unfinished_parses)
-        for i, parse in enumerate(unfinished_parses):
+        finished_parses_indices = set()        
+        batch = unfinished_parses[:min(batch_size, len(unfinished_parses))]
+        transitions = model.predict(batch)
+        for i, parse in enumerate(batch):
             parse.parse_step(transitions[i])
-            if i == 2:
-                print transitions[i]
-                print parse.stack, 'current stack in sentence', i
-                print parse.buffer, 'current buffer in sentence', i
-                print parse.dependencies, 'current deps in sentence', i
             if parse.buffer == [] and (len(parse.stack) == 1):
-                unfinished_parses.pop(i)
+                finished_parses_indices.add(i)
+        unfinished_parses = [x for idx, x in enumerate(unfinished_parses) if idx not in finished_parses_indices]
     dependencies = [x.dependencies for x in partial_parses]
     # pdb.set_trace()
     ### END YOUR CODE
