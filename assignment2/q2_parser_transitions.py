@@ -1,5 +1,3 @@
-import pdb
-
 class PartialParse(object):
     def __init__(self, sentence):
         """Initializes this partial parse.
@@ -90,7 +88,6 @@ def minibatch_parse(sentences, model, batch_size):
                 finished_parses_indices.add(i)
         unfinished_parses = [x for idx, x in enumerate(unfinished_parses) if idx not in finished_parses_indices]
     dependencies = [x.dependencies for x in partial_parses]
-    # pdb.set_trace()
     ### END YOUR CODE
 
     return dependencies
