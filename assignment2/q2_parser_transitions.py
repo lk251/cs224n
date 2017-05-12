@@ -1,3 +1,5 @@
+import pdb
+
 class PartialParse(object):
     def __init__(self, sentence):
         """Initializes this partial parse.
@@ -22,7 +24,7 @@ class PartialParse(object):
 
         ### YOUR CODE HERE
         self.stack = ['ROOT']
-        self.buffer = sentence.split
+        self.buffer = list(sentence)
         self.dependencies = []
         ### END YOUR CODE
 
@@ -76,7 +78,22 @@ def minibatch_parse(sentences, model, batch_size):
     """
 
     ### YOUR CODE HERE
-    
+    # First, make a list of PartialParses
+    partial_parses = [PartialParse(x) for x in sentences]
+    unfinished_parses = list(partial_parses)
+    while unfinished_parses:
+        transitions = model.predict(unfinished_parses)
+        for i, parse in enumerate(unfinished_parses):
+            parse.parse_step(transitions[i])
+            if i == 2:
+                print transitions[i]
+                print parse.stack, 'current stack in sentence', i
+                print parse.buffer, 'current buffer in sentence', i
+                print parse.dependencies, 'current deps in sentence', i
+            if parse.buffer == [] and (len(parse.stack) == 1):
+                unfinished_parses.pop(i)
+    dependencies = [x.dependencies for x in partial_parses]
+    # pdb.set_trace()
     ### END YOUR CODE
 
     return dependencies
