@@ -145,9 +145,9 @@ class ParserModel(Model):
         b1 = tf.Variable(tf.zeros(Config.hidden_size,))
         U = tf.Variable(xavier_initializer((Config.hidden_size, Config.n_classes)))
         b2 = tf.Variable(tf.zeros(Config.n_classes))
-        h = tf.nn.relu(x * W + b1)
+        h = tf.nn.relu(tf.matmul(x, W) + b1)
         h_drop = tf.nn.dropout(h, self.dropout_placeholder)
-        pred = h_drop * U + b2
+        pred = tf.matmul(h_drop, U) + b2
         ### END YOUR CODE
         return pred
 
@@ -165,7 +165,7 @@ class ParserModel(Model):
             loss: A 0-d tensor (scalar)
         """
         ### YOUR CODE HERE
-        loss = tf.nn.softmax_cross_entropy_with_logits(labels=self.labels_placeholder, logits=log(pred))
+        loss = tf.nn.softmax_cross_entropy_with_logits(labels=self.labels_placeholder, logits=tf.log(pred))
         ### END YOUR CODE
         return loss
 
@@ -189,7 +189,7 @@ class ParserModel(Model):
             train_op: The Op for training.
         """
         ### YOUR CODE HERE
-        train_op = tf.train.AdamOptimizer.minimize(loss)
+        train_op = tf.train.AdamOptimizer(learning_rate=Config.lr).minimize(loss)
         ### END YOUR CODE
         return train_op
 
