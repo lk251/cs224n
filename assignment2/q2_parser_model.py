@@ -109,7 +109,7 @@ class ParserModel(Model):
         """
         ### YOUR CODE HERE
         values = tf.nn.embedding_lookup(self.pretrained_embeddings, self.input_placeholder)
-        embeddings = tf.reshape(values, (-1, n_features*embed_size))
+        embeddings = tf.reshape(values, (-1, Config.n_features*Config.embed_size))
         ### END YOUR CODE
         return embeddings
 
@@ -188,7 +188,7 @@ class ParserModel(Model):
             train_op: The Op for training.
         """
         ### YOUR CODE HERE
-        
+        train_op = tf.train.AdamOptimizer.minimize(loss)
         ### END YOUR CODE
         return train_op
 
