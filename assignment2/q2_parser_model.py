@@ -83,6 +83,10 @@ class ParserModel(Model):
             feed_dict: The feed dictionary mapping from placeholders to values.
         """
         ### YOUR CODE HERE
+        feed_dict = {self.input_placeholder: inputs_batch}
+        if labels_batch is not None:
+            feed_dict[self.labels_placeholder] = labels_batch
+        feed_dict[self.dropout_placeholder] = dropout
         ### END YOUR CODE
         return feed_dict
 
