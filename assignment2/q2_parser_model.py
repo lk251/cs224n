@@ -108,6 +108,8 @@ class ParserModel(Model):
             embeddings: tf.Tensor of shape (None, n_features*embed_size)
         """
         ### YOUR CODE HERE
+        values = tf.nn.embedding_lookup(self.pretrained_embeddings, self.input_placeholder)
+        embeddings = tf.reshape(values, (-1, n_features*embed_size))
         ### END YOUR CODE
         return embeddings
 
@@ -138,6 +140,13 @@ class ParserModel(Model):
 
         x = self.add_embedding()
         ### YOUR CODE HERE
+        W = tf.Variable(xavier_weight_init((Config.n_features*Config.embed_size, Config.hidden_size)))
+        b1 = tf.Variable(tf.zeros(Config.hidden_size,))
+        U = tf.Variable(xavier_weight_init((Config.hidden_size*Config.n_classes)))
+        b2 = tf.Variable(tf.zeros(Config.n_classes))
+        h = tf.nn.relu(embeddings * W + b1)
+        h_drop = tf.nn.dropout(h, self.dropout_placeholder)
+        pred = h_drop * U + b2
         ### END YOUR CODE
         return pred
 
@@ -155,6 +164,7 @@ class ParserModel(Model):
             loss: A 0-d tensor (scalar)
         """
         ### YOUR CODE HERE
+        loss = tf.nn.softmax_cross_entropy_with_logits(labels=self.labels_placeholder, logits=log(pred))
         ### END YOUR CODE
         return loss
 
@@ -178,6 +188,7 @@ class ParserModel(Model):
             train_op: The Op for training.
         """
         ### YOUR CODE HERE
+        
         ### END YOUR CODE
         return train_op
 
