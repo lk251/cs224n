@@ -8,6 +8,7 @@ from q2_initialization import xavier_weight_init
 from utils.general_utils import Progbar
 from utils.parser_utils import minibatches, load_and_preprocess_data
 
+import pdb
 
 class Config(object):
     """Holds model hyperparams and data information.
@@ -143,10 +144,11 @@ class ParserModel(Model):
         W = tf.Variable(xavier_initializer((Config.n_features*Config.embed_size, Config.hidden_size)))
         b1 = tf.Variable(tf.zeros(Config.hidden_size,))
         U = tf.Variable(xavier_initializer((Config.hidden_size, Config.n_classes)))
-        b2 = tf.Variable(tf.zeros(Config.n_classes))
+        b2 = tf.Variable(tf.zeros(Config.n_classes,))
         h = tf.nn.relu(tf.matmul(x, W) + b1)
         h_drop = tf.nn.dropout(h, self.dropout_placeholder)
         pred = tf.matmul(h_drop, U) + b2
+        tf.summary.tensor_summary('pred', pred)
         ### END YOUR CODE
         return pred
 
@@ -195,13 +197,14 @@ class ParserModel(Model):
     def train_on_batch(self, sess, inputs_batch, labels_batch):
         feed = self.create_feed_dict(inputs_batch, labels_batch=labels_batch,
                                      dropout=self.config.dropout)
-        _, loss = sess.run([self.train_op, self.loss], feed_dict=feed)
-        return loss
+        _, loss, pred = sess.run([self.train_op, self.loss, self.pred], feed_dict=feed)
+        return loss, pred
 
     def run_epoch(self, sess, parser, train_examples, dev_set):
         prog = Progbar(target=1 + len(train_examples) / self.config.batch_size)
         for i, (train_x, train_y) in enumerate(minibatches(train_examples, self.config.batch_size)):
-            loss = self.train_on_batch(sess, train_x, train_y)
+            loss, pred = self.train_on_batch(sess, train_x, train_y)
+            print loss, train_y.shape, pred.shape, ' loss and pred'
             prog.update(i + 1, [("train loss", loss)])
 
         print "Evaluating on dev set",
@@ -233,6 +236,7 @@ def main(debug=True):
     print 80 * "="
     config = Config()
     parser, embeddings, train_examples, dev_set, test_set = load_and_preprocess_data(debug)
+
     if not os.path.exists('./data/weights/'):
         os.makedirs('./data/weights/')
 
@@ -250,6 +254,7 @@ def main(debug=True):
         saver = None if debug else tf.train.Saver()
 
         with tf.Session() as session:
+            file_writer = tf.summary.FileWriter('tensorboard_dir/', session.graph)
             parser.session = session
             session.run(init)
 
