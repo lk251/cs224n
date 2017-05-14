@@ -165,7 +165,7 @@ class ParserModel(Model):
             loss: A 0-d tensor (scalar)
         """
         ### YOUR CODE HERE
-        loss = tf.nn.softmax_cross_entropy_with_logits(labels=self.labels_placeholder, logits=tf.log(pred))
+        loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.labels_placeholder, logits=tf.log(pred)))
         ### END YOUR CODE
         return loss
 
