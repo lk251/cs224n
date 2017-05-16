@@ -202,8 +202,7 @@ class ParserModel(Model):
         prog = Progbar(target=1 + len(train_examples) / self.config.batch_size)
         for i, (train_x, train_y) in enumerate(minibatches(train_examples, self.config.batch_size)):
 
-            loss, pred = self.train_on_batch(sess, train_x, train_y)
-            print loss, train_y.shape, pred, ' loss and pred'
+            loss = self.train_on_batch(sess, train_x, train_y)
             prog.update(i + 1, [("train loss", loss)])
 
         print "Evaluating on dev set",
@@ -235,7 +234,6 @@ def main(debug=True):
     print 80 * "="
     config = Config()
     parser, embeddings, train_examples, dev_set, test_set = load_and_preprocess_data(debug)
-
     if not os.path.exists('./data/weights/'):
         os.makedirs('./data/weights/')
 
@@ -253,11 +251,8 @@ def main(debug=True):
         saver = None if debug else tf.train.Saver()
 
         with tf.Session() as session:
-            file_writer = tf.summary.FileWriter('tensorboard_dir/', session.graph)
             parser.session = session
             session.run(init)
-
-
 
             print 80 * "="
             print "TRAINING"
