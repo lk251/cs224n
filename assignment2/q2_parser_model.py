@@ -8,7 +8,6 @@ from q2_initialization import xavier_weight_init
 from utils.general_utils import Progbar
 from utils.parser_utils import minibatches, load_and_preprocess_data
 
-import pdb
 
 class Config(object):
     """Holds model hyperparams and data information.
