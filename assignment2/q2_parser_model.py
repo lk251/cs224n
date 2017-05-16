@@ -141,16 +141,12 @@ class ParserModel(Model):
         ### YOUR CODE HERE
         xavier_initializer = xavier_weight_init()
         W = tf.Variable(xavier_initializer((Config.n_features*Config.embed_size, Config.hidden_size)))
-        # W = tf.Variable(tf.truncated_normal((Config.n_features*Config.embed_size, Config.hidden_size)))
-        tf.summary.tensor_summary('W', W)
         b1 = tf.Variable(tf.zeros((Config.hidden_size,), tf.float32))
         U = tf.Variable(xavier_initializer((Config.hidden_size, Config.n_classes)))
-        # U = tf.Variable(tf.truncated_normal((Config.hidden_size, Config.n_classes)))
         b2 = tf.Variable(tf.zeros((Config.n_classes,), tf.float32))
         h = tf.nn.relu(tf.matmul(x, W) + b1)
         h_drop = tf.nn.dropout(h, self.dropout_placeholder)
         pred = tf.matmul(h_drop, U) + b2
-        tf.summary.tensor_summary('pred', pred)
         ### END YOUR CODE
         return pred
 
