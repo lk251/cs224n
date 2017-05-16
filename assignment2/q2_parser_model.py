@@ -195,7 +195,7 @@ class ParserModel(Model):
     def train_on_batch(self, sess, inputs_batch, labels_batch):
         feed = self.create_feed_dict(inputs_batch, labels_batch=labels_batch,
                                      dropout=self.config.dropout)
-        _, loss, pred = sess.run([self.train_op, self.loss], feed_dict=feed)
+        _, loss = sess.run([self.train_op, self.loss], feed_dict=feed)
         return loss
 
     def run_epoch(self, sess, parser, train_examples, dev_set):
