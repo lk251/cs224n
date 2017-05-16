@@ -142,9 +142,12 @@ class ParserModel(Model):
         ### YOUR CODE HERE
         xavier_initializer = xavier_weight_init()
         W = tf.Variable(xavier_initializer((Config.n_features*Config.embed_size, Config.hidden_size)))
-        b1 = tf.Variable(tf.zeros(Config.hidden_size,))
+        # W = tf.Variable(tf.truncated_normal((Config.n_features*Config.embed_size, Config.hidden_size)))
+        tf.summary.tensor_summary('W', W)
+        b1 = tf.Variable(tf.zeros((Config.hidden_size,), tf.float32))
         U = tf.Variable(xavier_initializer((Config.hidden_size, Config.n_classes)))
-        b2 = tf.Variable(tf.zeros(Config.n_classes,))
+        # U = tf.Variable(tf.truncated_normal((Config.hidden_size, Config.n_classes)))
+        b2 = tf.Variable(tf.zeros((Config.n_classes,), tf.float32))
         h = tf.nn.relu(tf.matmul(x, W) + b1)
         h_drop = tf.nn.dropout(h, self.dropout_placeholder)
         pred = tf.matmul(h_drop, U) + b2
@@ -166,7 +169,7 @@ class ParserModel(Model):
             loss: A 0-d tensor (scalar)
         """
         ### YOUR CODE HERE
-        loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.labels_placeholder, logits=tf.log(pred)))
+        loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.labels_placeholder, logits=pred))
         ### END YOUR CODE
         return loss
 
@@ -203,8 +206,9 @@ class ParserModel(Model):
     def run_epoch(self, sess, parser, train_examples, dev_set):
         prog = Progbar(target=1 + len(train_examples) / self.config.batch_size)
         for i, (train_x, train_y) in enumerate(minibatches(train_examples, self.config.batch_size)):
+
             loss, pred = self.train_on_batch(sess, train_x, train_y)
-            print loss, train_y.shape, pred.shape, ' loss and pred'
+            print loss, train_y.shape, pred, ' loss and pred'
             prog.update(i + 1, [("train loss", loss)])
 
         print "Evaluating on dev set",
@@ -257,6 +261,8 @@ def main(debug=True):
             file_writer = tf.summary.FileWriter('tensorboard_dir/', session.graph)
             parser.session = session
             session.run(init)
+
+
 
             print 80 * "="
             print "TRAINING"
