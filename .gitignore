@@ -19,3 +19,6 @@ utils/datasets/glove.6B.50d.txt
 *.pyc
 /q4_dev_pred.txt
 /.DS_Store
+assignment2/tensorboard_dir/
+assignment2/data/weights/
+assignment2/q2_test.predicted.pkl

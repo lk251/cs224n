@@ -25,7 +25,7 @@ def xavier_weight_init():
             out: tf.Tensor of specified shape sampled from the Xavier distribution.
         """
         ### YOUR CODE HERE
-        epsilon = (6 / sum(shape))**.5
+        epsilon = (6.0 / sum(shape))**.5
         out = tf.random_uniform(shape, minval=-epsilon, maxval=epsilon)
         ### END YOUR CODE
         return out
