@@ -20,9 +20,9 @@ class Config(object):
     n_classes = 3
     dropout = 0.5
     embed_size = 50
-    hidden_size = 200
+    hidden_size = 2000
     batch_size = 2048
-    n_epochs = 10
+    n_epochs = 15
     lr = 0.001
 
 
