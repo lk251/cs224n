@@ -20,9 +20,9 @@ class Config(object):
     n_classes = 3
     dropout = 0.5
     embed_size = 50
-    hidden_size = 200
+    hidden_size = 2000
     batch_size = 2048
-    n_epochs = 10
+    n_epochs = 15
     lr = 0.001
 
 
@@ -54,6 +54,10 @@ class ParserModel(Model):
         (Don't change the variable names)
         """
         ### YOUR CODE HERE
+        self.input_placeholder = tf.placeholder(tf.int32, shape=(None, Config.n_features))
+        self.labels_placeholder = tf.placeholder(tf.float32, shape=(None, Config.n_classes))
+        self.dropout_placeholder = tf.placeholder(tf.float32, shape=())
+
         ### END YOUR CODE
 
     def create_feed_dict(self, inputs_batch, labels_batch=None, dropout=1):
@@ -79,6 +83,9 @@ class ParserModel(Model):
             feed_dict: The feed dictionary mapping from placeholders to values.
         """
         ### YOUR CODE HERE
+        feed_dict = {self.input_placeholder: inputs_batch, self.dropout_placeholder: dropout}
+        if labels_batch is not None:
+            feed_dict[self.labels_placeholder] = labels_batch
         ### END YOUR CODE
         return feed_dict
 
@@ -100,6 +107,8 @@ class ParserModel(Model):
             embeddings: tf.Tensor of shape (None, n_features*embed_size)
         """
         ### YOUR CODE HERE
+        values = tf.nn.embedding_lookup(self.pretrained_embeddings, self.input_placeholder)
+        embeddings = tf.reshape(values, (-1, Config.n_features*Config.embed_size))
         ### END YOUR CODE
         return embeddings
 
@@ -130,6 +139,14 @@ class ParserModel(Model):
 
         x = self.add_embedding()
         ### YOUR CODE HERE
+        xavier_initializer = xavier_weight_init()
+        W = tf.Variable(xavier_initializer((Config.n_features*Config.embed_size, Config.hidden_size)))
+        b1 = tf.Variable(tf.zeros((Config.hidden_size,), tf.float32))
+        U = tf.Variable(xavier_initializer((Config.hidden_size, Config.n_classes)))
+        b2 = tf.Variable(tf.zeros((Config.n_classes,), tf.float32))
+        h = tf.nn.relu(tf.matmul(x, W) + b1)
+        h_drop = tf.nn.dropout(h, self.dropout_placeholder)
+        pred = tf.matmul(h_drop, U) + b2
         ### END YOUR CODE
         return pred
 
@@ -147,6 +164,7 @@ class ParserModel(Model):
             loss: A 0-d tensor (scalar)
         """
         ### YOUR CODE HERE
+        loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.labels_placeholder, logits=pred))
         ### END YOUR CODE
         return loss
 
@@ -170,6 +188,7 @@ class ParserModel(Model):
             train_op: The Op for training.
         """
         ### YOUR CODE HERE
+        train_op = tf.train.AdamOptimizer(learning_rate=Config.lr).minimize(loss)
         ### END YOUR CODE
         return train_op
 
@@ -182,6 +201,7 @@ class ParserModel(Model):
     def run_epoch(self, sess, parser, train_examples, dev_set):
         prog = Progbar(target=1 + len(train_examples) / self.config.batch_size)
         for i, (train_x, train_y) in enumerate(minibatches(train_examples, self.config.batch_size)):
+
             loss = self.train_on_batch(sess, train_x, train_y)
             prog.update(i + 1, [("train loss", loss)])
 
@@ -208,7 +228,7 @@ class ParserModel(Model):
         self.build()
 
 
-def main(debug=True):
+def main(debug=False):
     print 80 * "="
     print "INITIALIZING"
     print 80 * "="
