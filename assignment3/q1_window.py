@@ -136,7 +136,7 @@ class WindowModel(NERModel):
         (Don't change the variable names)
         """
         ### YOUR CODE HERE (~3-5 lines)
-        self.input_placeholder = tf.placeholder(tf.int32, shape=(None, n_window_features))
+        self.input_placeholder = tf.placeholder(tf.int32, shape=(None, Config.n_window_features))
         self.labels_placeholder = tf.placeholder(tf.int32, shape=(None,))
         self.dropout_placeholder = tf.placeholder(tf.float32, shape=())
         ### END YOUR CODE
@@ -187,7 +187,7 @@ class WindowModel(NERModel):
         """
         ### YOUR CODE HERE (!3-5 lines)
         embeddings = tf.nn.embedding_lookup(self.pretrained_embeddings, self.input_placeholder)
-        embeddings = tf.reshape(embeddings, (None, n_window_features * embed_size))
+        embeddings = tf.reshape(embeddings, (None, Config.n_window_features * embed_size))
         ### END YOUR CODE
         return embeddings
 
