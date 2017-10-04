@@ -187,7 +187,7 @@ class WindowModel(NERModel):
         """
         ### YOUR CODE HERE (!3-5 lines)
         embeddings = tf.nn.embedding_lookup(self.pretrained_embeddings, self.input_placeholder)
-        embeddings = tf.reshape(embeddings, (None, Config.n_window_features * embed_size))
+        embeddings = tf.reshape(embeddings, (None, Config.n_window_features * Config.embed_size))
         ### END YOUR CODE
         return embeddings
 
@@ -218,7 +218,7 @@ class WindowModel(NERModel):
         x = self.add_embedding()
         dropout_rate = self.dropout_placeholder
         ### YOUR CODE HERE (~10-20 lines)
-        W = tf.get_variable("W", shape=((2 * window_size + 1) * embed_size, hidden_size)
+        W = tf.get_variable("W", shape=((2 * window_size + 1) * Config.embed_size, Config.hidden_size)
         ### END YOUR CODE
         return pred
 
