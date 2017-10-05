@@ -219,6 +219,12 @@ class WindowModel(NERModel):
         dropout_rate = self.dropout_placeholder
         ### YOUR CODE HERE (~10-20 lines)
         W = tf.get_variable("W", shape=((2 * window_size + 1) * Config.embed_size, Config.hidden_size), initializer=tf.contrib.layers.xavier_initializer())
+        b1 = tf.get_variable("b1", shape=(Config.hidden_size), initializer=tf.contrib.layers.xavier_initializer())
+        h = tf.nn.relu(tf.matmul(x, W) + b1)
+        h_drop = tf.nn.dropout(h, dropout_rate)
+        U = tf.get_variable("U", shape=(Config.hidden_size,  Config.n_classes), initializer=tf.contrib.layers.xavier_initializer())
+        b2 = tf.get_variable("b2", shape=(Config.n_classes), initializer=tf.contrib.layers.xavier_initializer())
+        pred = tf.matmul(h_drop, U) + b2
         ### END YOUR CODE
         return pred
 
