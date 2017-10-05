@@ -267,7 +267,7 @@ class WindowModel(NERModel):
             train_op: The Op for training.
         """
         ### YOUR CODE HERE (~1-2 lines)
-        train_op = tf.train.AdamOptimizer.minimize(loss)
+        train_op = tf.train.AdamOptimizer().minimize(loss)
         ### END YOUR CODE
         return train_op
 
