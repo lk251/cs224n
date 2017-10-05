@@ -218,7 +218,7 @@ class WindowModel(NERModel):
         x = self.add_embedding()
         dropout_rate = self.dropout_placeholder
         ### YOUR CODE HERE (~10-20 lines)
-        W = tf.get_variable("W", shape=((2 * window_size + 1) * Config.embed_size, Config.hidden_size)
+        W = tf.get_variable("W", shape=((2 * window_size + 1) * Config.embed_size, Config.hidden_size))
         ### END YOUR CODE
         return pred
 
