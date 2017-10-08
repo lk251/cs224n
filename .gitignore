@@ -22,3 +22,4 @@ utils/datasets/glove.6B.50d.txt
 assignment2/tensorboard_dir/
 assignment2/data/weights/
 assignment2/q2_test.predicted.pkl
+assignment3/results
