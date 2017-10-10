@@ -18,7 +18,7 @@ logger = logging.getLogger("hw3.q2.1")
 logger.setLevel(logging.DEBUG)
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
-class RNNCell(tf.contrib.rnn_cell.RNNCell):
+class RNNCell(tf.contrib.rnn.BasicRNNCell):
     """Wrapper around our RNN cell implementation that allows us to play
     nicely with TensorFlow.
     """
