@@ -78,7 +78,7 @@ def pad_sequences(data, max_length):
     0, 0], and max_length = 5, we would construct
         - a new sentence: [[4,1], [6,0], [7,0], [0,0], [0,0]]
         - a new label seqeunce: [1, 0, 0, 4, 4], and
-        - a masking seqeunce: [True, True, True, False, False].
+        - a masking sequence: [True, True, True, False, False].
 
     Args:
         data: is a list of (sentence, labels) tuples. @sentence is a list
