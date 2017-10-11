@@ -273,10 +273,11 @@ class RNNModel(NERModel):
         h = tf.zeros(Config.hidden_size, tf.int32)
         ### END YOUR CODE
 
-        with tf.variable_scope("RNN"):
+        with tf.variable_scope("RNN") as scope:
             for time_step in range(self.max_length):
                 ### YOUR CODE HERE (~6-10 lines)
-                pass
+                scope.reuse_variables()
+                
                 ### END YOUR CODE
 
         # Make sure to reshape @preds here.
