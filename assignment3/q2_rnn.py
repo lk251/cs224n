@@ -284,7 +284,7 @@ class RNNModel(NERModel):
 
         # Make sure to reshape @preds here.
         ### YOUR CODE HERE (~2-4 lines)
-        preds = tf.(preds)
+        preds = tf.stack(preds)
         preds = tf.transpose(preds, perm=[0, 2, 1])
         ### END YOUR CODE
 
