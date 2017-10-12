@@ -279,11 +279,12 @@ class RNNModel(NERModel):
                 scope.reuse_variables()
                 h = cell(x, h)
                 y = tf.matmul(h, U) + b2
-                pred.append(y)
+                preds.append(y)
                 ### END YOUR CODE
 
         # Make sure to reshape @preds here.
         ### YOUR CODE HERE (~2-4 lines)
+        
         ### END YOUR CODE
 
         assert preds.get_shape().as_list() == [None, self.max_length, self.config.n_classes], "predictions are not of the right shape. Expected {}, got {}".format([None, self.max_length, self.config.n_classes], preds.get_shape().as_list())
