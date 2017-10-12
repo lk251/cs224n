@@ -205,7 +205,8 @@ class RNNModel(NERModel):
             embeddings: tf.Tensor of shape (None, max_length, n_features*embed_size)
         """
         ### YOUR CODE HERE (~4-6 lines)
-        embeddings = tf.nn.embedding_lookup(self.pretrained_embeddings, self.input_placeholder)
+        embeddings = tf.get_variable("embeddings", initializer=self.pretrained_embeddings)
+        embeddings = tf.nn.embedding_lookup(embeddings, self.input_placeholder)
         embeddings = tf.reshape(embeddings, [-1, self.max_length, Config.n_features * Config.embed_size])
         ### END YOUR CODE
         return embeddings
