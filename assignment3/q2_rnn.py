@@ -276,7 +276,7 @@ class RNNModel(NERModel):
         with tf.variable_scope("RNN"):
             for time_step in range(self.max_length):
                 ### YOUR CODE HERE (~6-10 lines)
-                h = cell(x[:, time_step, :], h)
+                _, h = cell(x[:, time_step, :], h)
                 y = tf.matmul(h, U) + b2
                 preds.append(y)
                 tf.get_variable_scope().reuse_variables()
@@ -284,7 +284,7 @@ class RNNModel(NERModel):
 
         # Make sure to reshape @preds here.
         ### YOUR CODE HERE (~2-4 lines)
-        preds = tf.pack(preds)
+        preds = tf.(preds)
         preds = tf.transpose(preds, perm=[0, 2, 1])
         ### END YOUR CODE
 
