@@ -277,7 +277,9 @@ class RNNModel(NERModel):
             for time_step in range(self.max_length):
                 ### YOUR CODE HERE (~6-10 lines)
                 scope.reuse_variables()
-                
+                h = cell(x, h)
+                y = tf.matmul(h, U) + b2
+                pred.append(y)
                 ### END YOUR CODE
 
         # Make sure to reshape @preds here.
