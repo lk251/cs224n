@@ -206,7 +206,7 @@ class RNNModel(NERModel):
         """
         ### YOUR CODE HERE (~4-6 lines)
         embeddings = tf.nn.embedding_lookup(self.pretrained_embeddings, self.input_placeholder)
-        embeddings = tf.reshape(embeddings, [-1, self.max_length, n_features * embed_size])
+        embeddings = tf.reshape(embeddings, [-1, self.max_length, Config.n_features * Config.embed_size])
         ### END YOUR CODE
         return embeddings
 
