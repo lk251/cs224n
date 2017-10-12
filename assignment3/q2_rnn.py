@@ -277,14 +277,14 @@ class RNNModel(NERModel):
             for time_step in range(self.max_length):
                 ### YOUR CODE HERE (~6-10 lines)
                 tf.get_variable_scope().reuse_variables()
-                h = cell(x, h)
+                h = cell(x[:, time_step, :], h)
                 y = tf.matmul(h, U) + b2
                 preds.append(y)
                 ### END YOUR CODE
 
         # Make sure to reshape @preds here.
         ### YOUR CODE HERE (~2-4 lines)
-        
+
         ### END YOUR CODE
 
         assert preds.get_shape().as_list() == [None, self.max_length, self.config.n_classes], "predictions are not of the right shape. Expected {}, got {}".format([None, self.max_length, self.config.n_classes], preds.get_shape().as_list())
