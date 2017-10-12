@@ -151,7 +151,7 @@ class RNNModel(NERModel):
         ### YOUR CODE HERE (~4-6 lines)
         self.input_placeholder = tf.placeholder(tf.int32, shape=(None, self.max_length, Config.n_features))
         self.labels_placeholder = tf.placeholder(tf.int32, shape=(None, self.max_length))
-        self.mask_placeholder = tf.placeholdder(tf.bool, shape=(None, self.max_length))
+        self.mask_placeholder = tf.placeholder(tf.bool, shape=(None, self.max_length))
         self.dropout_placeholder = tf.placeholder(tf.float32, shape=())       
         ### END YOUR CODE
 
