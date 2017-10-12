@@ -277,7 +277,8 @@ class RNNModel(NERModel):
             for time_step in range(self.max_length):
                 ### YOUR CODE HERE (~6-10 lines)
                 _, h = cell(x[:, time_step, :], h)
-                y = tf.matmul(h, U) + b2
+                h_drop = tf.nn.dropout(h, dropout_rate)
+                y = tf.matmul(h_drop, U) + b2
                 preds.append(y)
                 tf.get_variable_scope().reuse_variables()
                 ### END YOUR CODE
