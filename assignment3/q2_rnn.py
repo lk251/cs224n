@@ -270,7 +270,7 @@ class RNNModel(NERModel):
         ### YOUR CODE HERE (~4-6 lines)
         U = tf.get_variable("U", shape=(Config.hidden_size, Config.n_classes), initializer=tf.contrib.layers.xavier_initializer())
         b2 = tf.get_variable("b2", shape=(Config.n_classes), initializer=tf.contrib.layers.xavier_initializer())
-        h = tf.zeros(Config.hidden_size, tf.float32)
+        h = tf.zeros((1, Config.hidden_size), tf.float32)
         ### END YOUR CODE
 
         with tf.variable_scope("RNN"):
