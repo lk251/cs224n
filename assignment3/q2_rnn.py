@@ -269,7 +269,7 @@ class RNNModel(NERModel):
         # Initialize state as vector of zeros.
         ### YOUR CODE HERE (~4-6 lines)
         U = tf.get_variable("U", shape=(Config.hidden_size, Config.n_classes), initializer=tf.contrib.layers.xavier_initializer())
-        b2 = tf.get_variable("b2", shape=(Config.n_classes), initializer=tf.contrib.layers.xavier_initialier())
+        b2 = tf.get_variable("b2", shape=(Config.n_classes), initializer=tf.contrib.layers.xavier_initializer())
         h = tf.zeros(Config.hidden_size, tf.int32)
         ### END YOUR CODE
 
