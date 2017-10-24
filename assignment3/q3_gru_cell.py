@@ -43,7 +43,7 @@ class GRUCell(tf.contrib.rnn.BasicRNNCell):
         o_t = tanh(x_t U_o + r_t * h_{t-1} W_o + b_o)
         h_t = z_t * h_{t-1} + (1 - z_t) * o_t
 
-        TODO: In the code below, implement an GRU cell using @inputs
+        TODO: In the code below, implement a GRU cell using @inputs
         (x_t above) and the state (h_{t-1} above).
             - Define W_r, U_r, b_r, W_z, U_z, b_z and W_o, U_o, b_o to
               be variables of the apporiate shape using the
