@@ -65,7 +65,15 @@ class GRUCell(tf.contrib.rnn.BasicRNNCell):
         # be defined elsewhere!
         with tf.variable_scope(scope):
             ### YOUR CODE HERE (~20-30 lines)
-            pass
+            U_z = tf.get_variable("U_z", shape=(self.input_size, self._state_size), initializer=tf.contrib.layers.xavier_initializer())
+            U_r = tf.get_variable("U_r", shape=(self.input_size, self._state_size), initializer=tf.contrib.layers.xavier_initializer())
+            U_o = tf.get_variable("U_o", shape=(self.input_size, self._state_size), initializer=tf.contrib.layers.xavier_initializer())
+            W_z = tf.get_variable("W_z", shape=(self._state_size, self._state_size), initializer=tf.contrib.layers.xavier_initializer())
+            W_r = tf.get_variable("W_z", shape=(self._state_size, self._state_size), initializer=tf.contrib.layers.xavier_initializer())
+            W_o = tf.get_variable("W_o", shape=(self._state_size, self._state_size), initializer=tf.contrib.layers.xavier_initializer())
+            b_z = tf.get_variable("b_z", shape=(self._state_size), initializer=tf.contrib.layers.xavier_initializer())
+            b_r = tf.get_variable("b_r", shape=(self._state_size), initializer=tf.contrib.layers.xavier_initializer())
+            b_o = tf.get_variable("b_o", shape=(self._state_size), initializer=tf.contrib.layers.xavier_initializer())
             ### END YOUR CODE ###
         # For a GRU, the output and state are the same (N.B. this isn't true
         # for an LSTM, though we aren't using one of those in our
