@@ -141,7 +141,7 @@ class SequencePredictor(Model):
 
         ### YOUR CODE HERE (~6-10 lines)
         gradients = optimizer.compute_gradients(loss)
-        if self.clip_gradients == True:
+        if self.config.clip_gradients == True:
             gradients = tf.clip_by_global_norm(gradients, self.config.max_grad_norm)
             self.grad_norm = tf.global_norm(gradients)
         train_op = tf.train.optimizer.apply_gradients(gradients)
