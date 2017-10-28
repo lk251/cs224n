@@ -109,7 +109,7 @@ class SequencePredictor(Model):
         y = self.labels_placeholder
 
         ### YOUR CODE HERE (~1-2 lines)
-        loss = tf.reduce_mean(tf.nn.l2_loss(y - x))
+        loss = tf.reduce_mean(tf.nn.l2_loss(y - preds))
         ### END YOUR CODE
 
         return loss
