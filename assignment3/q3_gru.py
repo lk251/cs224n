@@ -140,11 +140,12 @@ class SequencePredictor(Model):
         optimizer = tf.train.GradientDescentOptimizer(learning_rate=self.config.lr)
 
         ### YOUR CODE HERE (~6-10 lines)
-        gradients = optimizer.compute_gradients(loss)
+        grads, vars = zip(*(optimizer.compute_gradients(loss)))
+        self.grad_norm = tf.global_norm(grads)
         if self.config.clip_gradients == True:
-            gradients = tf.clip_by_global_norm(gradients, self.config.max_grad_norm)
-        self.grad_norm = tf.global_norm(gradients)
-        train_op = optimizer.apply_gradients(gradients)
+            grads, self.grad_norm = tf.clip_by_global_norm(grads, self.config.max_grad_norm)
+        grads_and_vars = zip(grads, vars)
+        train_op = optimizer.apply_gradients(grads_and_vars)
         # - Remember to clip gradients only if self.config.clip_gradients
         # is True.
         # - Remember to set self.grad_norm
