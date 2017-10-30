@@ -72,7 +72,7 @@ class GRUCell(tf.contrib.rnn.BasicRNNCell):
             z = tf.sigmoid(tf.matmul(inputs, U_z) + tf.matmul(state, W_z) + b_z)
 
             U_r = tf.get_variable("U_r", shape=(self.input_size, self._state_size), initializer=init)
-            W_r = tf.get_variable("W_z", shape=(self._state_size, self._state_size), initializer=init)
+            W_r = tf.get_variable("W_r", shape=(self._state_size, self._state_size), initializer=init)
             b_r = tf.get_variable("b_r", shape=(self._state_size), initializer=init)
             r = tf.sigmoid(tf.matmul(inputs, U_r) + tf.matmul(state, W_r) + b_r)
 
