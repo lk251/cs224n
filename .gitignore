@@ -23,3 +23,5 @@ assignment2/tensorboard_dir/
 assignment2/data/weights/
 assignment2/q2_test.predicted.pkl
 assignment3/results
+/assignment3/cscope.files
+/assignment3/cscope.out
