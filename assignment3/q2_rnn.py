@@ -126,16 +126,20 @@ class RNNModel(NERModel):
     def add_placeholders(self):
         """Generates placeholder variables to represent the input tensors
 
-        These placeholders are used as inputs by the rest of the model building and will be fed
-        data during training.  Note that when "None" is in a placeholder's shape, it's flexible
-        (so we can use different batch sizes without rebuilding the model).
+        These placeholders are used as inputs by the rest of the model
+        building and will be fed data during training.  Note that when
+        "None" is in a placeholder's shape, it's flexible (so we can
+        use different batch sizes without rebuilding the model).
 
         Adds following nodes to the computational graph
 
-        input_placeholder: Input placeholder tensor of  shape (None, self.max_length, n_features), type tf.int32
-        labels_placeholder: Labels placeholder tensor of shape (None, self.max_length), type tf.int32
-        mask_placeholder:  Mask placeholder tensor of shape (None, self.max_length), type tf.bool
-        dropout_placeholder: Dropout value placeholder (scalar), type tf.float32
+        input_placeholder: Input placeholder tensor of shape (None,
+        self.max_length, n_features), type tf.int32
+        labels_placeholder: Labels placeholder tensor of shape (None,
+        self.max_length), type tf.int32 mask_placeholder: Mask
+        placeholder tensor of shape (None, self.max_length), type
+        tf.bool dropout_placeholder: Dropout value placeholder
+        (scalar), type tf.float32
 
         TODO: Add these placeholders to self as the instance variables
             self.input_placeholder
